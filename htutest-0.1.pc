@@ -1,0 +1,12 @@
+prefix=/usr
+exec_prefix=${prefix}
+libdir=${prefix}/lib/x86_64-linux-gnu
+includedir=${prefix}/include/htutest-0.1
+
+Name: htutest
+Description: Header only and trivial library for unit tests
+Version: 0.1.0
+Requires: 
+Conflicts: 
+Libs:
+Cflags: -I${includedir} -std=c++11
