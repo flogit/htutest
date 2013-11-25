@@ -19,7 +19,8 @@
 
 #include <string>
 #include <map>
-#include <unordered_map>
+#include <list>
+#include <unordered_set>
 
 namespace utest
 {
@@ -37,7 +38,7 @@ namespace utest
 
         private: // methods
             CUnitTestSuite(){}
-            void parse_args(int argc, char** argv, std::map<std::string, std::unordered_set<std::string>>& outTestListFromParsing);
+            inline void parse_args(int argc, char** argv, std::map<std::string, std::unordered_set<std::string>>& outTestListFromParsing);
 
         protected: // members
             std::list<CUnitTestBase*> m_testList;
