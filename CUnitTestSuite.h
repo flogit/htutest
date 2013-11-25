@@ -38,7 +38,10 @@ namespace utest
 
         private: // methods
             CUnitTestSuite(){}
-            inline void parse_args(int argc, char** argv, std::map<std::string, std::unordered_set<std::string>>& outTestListFromParsing);
+            inline void parse_args(int argc,
+                                   char** argv,
+                                   std::map<std::string, std::unordered_set<std::string>>& outTestListFromParsing,
+                                   bool& outListAvailableTest);
 
         protected: // members
             std::list<CUnitTestBase*> m_testList;

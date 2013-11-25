@@ -53,28 +53,50 @@ namespace utest
         bool globalResult = true;
 
         std::map<std::string, std::unordered_set<std::string>> testMapFromParsing;
-        parse_args(inArgc, inArgv, testMapFromParsing);
+        bool listAvailableTest = false;
+        parse_args(inArgc, inArgv, testMapFromParsing, listAvailableTest);
 
-        for(auto test : m_testList)
+        if (listAvailableTest)
         {
-            auto foundIter = testMapFromParsing.find(test->getName());
-
-            if (foundIter != testMapFromParsing.cend())
+            for(auto test : m_testList)
             {
-                PRINT(" Start the test ", COLOR_ORANGE, test->getName(), COLOR_END);
-                PRINT("/-------------------------------");
-
-                bool result = test->runTest(foundIter->second);
-
-                PRINT("\\-------------------------------");
-                PRINT(" End of the test ", COLOR_ORANGE, test->getName(), COLOR_END, " (", result ? COLOR_GREEN "OK" COLOR_END : COLOR_RED "FAIL" COLOR_END, ")");
-                PRINT();
-
-                globalResult &= result;
+                PRINT(test->getName());
             }
         }
+        else
+        {
+            bool at_least_one_test_launched = false;
 
-        PRINT("Global result of the test : ", globalResult ? COLOR_GREEN "OK" COLOR_END : COLOR_RED "FAIL" COLOR_END);
+            for(auto test : m_testList)
+            {
+                auto foundIter = testMapFromParsing.find(test->getName());
+
+                if (foundIter != testMapFromParsing.cend())
+                {
+                    at_least_one_test_launched = true;
+
+                    PRINT(" Start the test ", COLOR_ORANGE, test->getName(), COLOR_END);
+                    PRINT("/-------------------------------");
+
+                    bool result = test->runTest(foundIter->second);
+
+                    PRINT("\\-------------------------------");
+                    PRINT(" End of the test ", COLOR_ORANGE, test->getName(), COLOR_END, " (", result ? COLOR_GREEN "OK" COLOR_END : COLOR_RED "FAIL" COLOR_END, ")");
+                    PRINT();
+
+                    globalResult &= result;
+                }
+            }
+
+            if (at_least_one_test_launched)
+            {
+                PRINT("Global result of the test : ", globalResult ? COLOR_GREEN "OK" COLOR_END : COLOR_RED "FAIL" COLOR_END);
+            }
+            else
+            {
+                PRINT("No test launched");
+            }
+        }
 
         return globalResult ? 0 : 1;
     }
@@ -82,11 +104,21 @@ namespace utest
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
     void
-    CUnitTestSuite::parse_args(int inArgc, char** inArgv, std::map<std::string, std::unordered_set<std::string>>& outTestListFromParsing)
+    CUnitTestSuite::parse_args(int inArgc,
+                               char** inArgv,
+                               std::map<std::string, std::unordered_set<std::string>>& outTestListFromParsing,
+                               bool& outListAvailableTest)
     {
+        outListAvailableTest = false;
+
         for (unsigned int argIdx = 1; argIdx < (unsigned int) inArgc; ++argIdx)
         {
             std::string arg(inArgv[argIdx]);
+
+            if (arg == "-l")
+            {
+                outListAvailableTest = true;
+            }
 
             size_t separator = arg.find_first_of("/");
             if (separator != std::string::npos)
