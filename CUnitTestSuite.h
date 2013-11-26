@@ -22,29 +22,29 @@
 #include <list>
 #include <unordered_set>
 
-namespace utest
+namespace htutest
 {
     class CUnitTestBase;
 
     class CUnitTestSuite
     {
         public: // methods
-            inline CUnitTestSuite(const std::initializer_list<CUnitTestBase*>& inList);
-            inline CUnitTestSuite(CUnitTestBase* inTest);
+            inline CUnitTestSuite(const std::initializer_list<CUnitTestBase*>& in_list);
+            inline CUnitTestSuite(CUnitTestBase* in_test);
             inline virtual ~CUnitTestSuite();
 
             ///@return Error code of a main function (0 : OK, 1 : at least one test has failed)
-            inline int run(int argc = 0, char** argv = 0);
+            inline int run(int in_argc = 0, char** in_argv = 0);
 
         private: // methods
             CUnitTestSuite(){}
-            inline void parse_args(int argc,
-                                   char** argv,
-                                   std::map<std::string, std::unordered_set<std::string>>& outTestListFromParsing,
-                                   bool& outListAvailableTest);
+            inline void parse_args(int in_argc,
+                                   char** in_argv,
+                                   std::map<std::string, std::unordered_set<std::string>>& out_test_list_from_parsing,
+                                   bool& out_list_available_test);
 
         protected: // members
-            std::list<CUnitTestBase*> m_testList;
+            std::list<CUnitTestBase*> m_test_list;
     };
 }
 

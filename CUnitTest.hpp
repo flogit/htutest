@@ -18,48 +18,48 @@
 #include "CTestCore.h"
 #include "macro.h"
 
-namespace utest
+namespace htutest
 {
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
     template <class T>
-    void CUnitTest<T>::add(const std::string& inName, bool(T::*inFct)())
+    void CUnitTest<T>::add(const std::string& in_name, bool(T::*in_fct)())
     {
-        m_testList.push_back(STest{inName, std::mem_fun(inFct)});
+        m_test_list.push_back(STest{in_name, std::mem_fun(in_fct)});
     }
 
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
     template <class T>
-    bool CUnitTest<T>::runTest(const std::unordered_set<std::string>& inList)
+    bool CUnitTest<T>::run_test(const std::unordered_set<std::string>& in_list)
     {
-        if (m_testList.empty())
+        if (m_test_list.empty())
         {
             add("main", &T::main);
         }
 
-        bool globalResult = true;
+        bool global_result = true;
 
-        for (STest& test : m_testList)
+        for (STest& test : m_test_list)
         {
-            if (inList.empty() || inList.count("*") || inList.count(test.m_name))
+            if (in_list.empty() || in_list.count("*") || in_list.count(test.m_name))
             {
-                CTestCore<void>::getInstance().startFunction();
+                CTestCore<void>::get_instance().start_function();
                 {
-                    setUp();
+                    set_up();
                     {
                         bool result = test.m_fun(static_cast<T*>(this));
 
-                        PRINT("Test ", test.m_name, "... ", result ? COLOR_GREEN "OK" COLOR_END : COLOR_RED "FAILED" COLOR_END);
+                        HTUTEST_PRINT("Test ", test.m_name, "... ", result ? HTUTEST_COLOR_GREEN "OK" HTUTEST_COLOR_END : HTUTEST_COLOR_RED "FAILED" HTUTEST_COLOR_END);
 
-                        globalResult &= result;
+                        global_result &= result;
                     }
-                    tearDown();
+                    tear_down();
                 }
-                CTestCore<void>::getInstance().endFunction();
+                CTestCore<void>::get_instance().end_function();
             }
         }
 
-        return globalResult;
+        return global_result;
     }
 }

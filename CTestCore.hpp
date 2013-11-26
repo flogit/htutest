@@ -19,13 +19,13 @@
 
 #include "CTestCore.h"
 
-namespace utest
+namespace htutest
 {
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
     template <typename T>
     CTestCore<T>::CTestCore() :
-        m_functionState(false),
+        m_function_state(false),
         m_indentation(0)
     {
     }
@@ -33,19 +33,19 @@ namespace utest
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
     template <typename T>
-    CTestCore<T>& CTestCore<T>::getInstance()
+    CTestCore<T>& CTestCore<T>::get_instance()
     {
-        if (!m_pInstance)
+        if (!m_p_instance)
         {
-            m_pInstance = new CTestCore();
+            m_p_instance = new CTestCore();
         }
-        return *m_pInstance;
+        return *m_p_instance;
     }
 
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
     template<typename T>
-    void CTestCore<T>::recPrint() const
+    void CTestCore<T>::rec_print() const
     {
         // terminal recursion for printing method
         std::cout << std::endl;
@@ -55,10 +55,10 @@ namespace utest
     ////////////////////////////////////////////////////////////////////////////////
     template<typename T>
     template<typename Arg0, typename... Args>
-    void CTestCore<T>::recPrint(const Arg0& in_arg0, const Args&... in_other) const
+    void CTestCore<T>::rec_print(const Arg0& in_arg0, const Args&... in_other) const
     {
         std::cout << in_arg0;
-        recPrint(in_other...);
+        rec_print(in_other...);
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -71,41 +71,41 @@ namespace utest
         {
             std::cout << "| ";
         }
-        recPrint(in_other...);
+        rec_print(in_other...);
     }
 
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
     template <typename T>
-    void CTestCore<T>::failIf(bool inCondition,
-                              const std::string& inMessage,
-                              const std::string& inExpression,
-                              const std::string& inFile,
-                              unsigned int inLine)
+    void CTestCore<T>::fail_if(bool in_condition,
+                               const std::string& in_message,
+                               const std::string& in_expression,
+                               const std::string& in_file,
+                               unsigned int in_line)
     {
-        if (inCondition)
+        if (in_condition)
         {
-            m_functionState = false;
+            m_function_state = false;
 
-            print("> ", inMessage);
-            print("> ", inExpression);
-            print("> ", "In file ", inFile, " at line ", inLine);
+            print("> ", in_message);
+            print("> ", in_expression);
+            print("> ", "In file ", in_file, " at line ", in_line);
         }
     }
 
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
     template <typename T>
-    void CTestCore<T>::startFunction()
+    void CTestCore<T>::start_function()
     {
-        m_functionState = true;
+        m_function_state = true;
         ++m_indentation;
     }
 
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
     template <typename T>
-    void CTestCore<T>::endFunction()
+    void CTestCore<T>::end_function()
     {
         --m_indentation;
     }
@@ -113,8 +113,8 @@ namespace utest
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
     template <typename T>
-    bool CTestCore<T>::getFunctionState() const
+    bool CTestCore<T>::get_function_state() const
     {
-        return m_functionState;
+        return m_function_state;
     }
 }

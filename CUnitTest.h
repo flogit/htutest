@@ -21,17 +21,17 @@
 #include <unordered_set>
 #include <list>
 
-namespace utest
+namespace htutest
 {
     class CUnitTestBase
     {
         public:
             virtual ~CUnitTestBase() {}
-            virtual bool runTest (const std::unordered_set<std::string> &inList) = 0;
-            inline const std::string& getName() const {return m_name;}
+            virtual bool run_test (const std::unordered_set<std::string>& in_list) = 0;
+            inline const std::string& get_name() const {return m_name;}
 
         protected:
-            CUnitTestBase(const std::string &inName = "anonymous"):m_name(inName){};
+            CUnitTestBase(const std::string &in_name = "anonymous") : m_name(in_name){};
 
         protected:
             std::string m_name;
@@ -41,14 +41,14 @@ namespace utest
     class CUnitTest : public CUnitTestBase
     {
         public: // methods
-            CUnitTest(const std::string &inName = "anonymous") : CUnitTestBase(inName) {}
+            CUnitTest(const std::string &in_name = "anonymous") : CUnitTestBase(in_name) {}
             virtual ~CUnitTest() {};
 
-            void add(const std::string & inName, bool(T::* inFct)());
-            bool runTest (const std::unordered_set<std::string> &inList);
+            void add(const std::string & in_name, bool(T::* in_fct)());
+            bool run_test (const std::unordered_set<std::string> &in_list);
 
-            virtual void setUp   ()   {};
-            virtual void tearDown()   {};
+            virtual void set_up   ()   {}
+            virtual void tear_down()   {}
 
             virtual bool main() { return true; };
 
@@ -60,7 +60,7 @@ namespace utest
             };
 
         private: // members
-            std::list<STest> m_testList;
+            std::list<STest> m_test_list;
     };
 }
 

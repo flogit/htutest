@@ -17,48 +17,48 @@
 
 #pragma once
 
-namespace utest
+namespace htutest
 {
     template <typename T>
     class CTestCore
     {
         public: // methods
 
-            inline static CTestCore<T>& getInstance();
+            inline static CTestCore<T>& get_instance();
 
-            inline void failIf(bool inCondition,
-                               const std::string& inMessage,
-                               const std::string& inExpression,
-                               const std::string& inFile,
-                               unsigned int inLine);
+            inline void fail_if(bool in_condition,
+                                const std::string& in_message,
+                                const std::string& in_expression,
+                                const std::string& in_file,
+                                unsigned int in_line);
 
             template<typename... Args>
             inline void print(const Args&... in_other) const;
 
-            inline void startFunction();
-            inline bool getFunctionState() const;
-            inline void endFunction();
+            inline void start_function();
+            inline bool get_function_state() const;
+            inline void end_function();
 
         private: // methods
 
             template<typename Arg0, typename... Args>
-            inline void recPrint(const Arg0& in_arg0, const Args&... in_other) const;
+            inline void rec_print(const Arg0& in_arg0, const Args&... in_other) const;
 
-            inline void recPrint() const;
+            inline void rec_print() const;
 
             inline CTestCore();
 
         private: // members
 
-            bool m_functionState;
+            bool m_function_state;
 
             unsigned int m_indentation;
 
-            static CTestCore* m_pInstance;
+            static CTestCore* m_p_instance;
     };
 
     template <typename T>
-     CTestCore<T>* CTestCore<T>::m_pInstance = 0;
+     CTestCore<T>* CTestCore<T>::m_p_instance = 0;
 }
 
 #include "CTestCore.hpp"

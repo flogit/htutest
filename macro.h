@@ -19,21 +19,21 @@
 
 #include "CTestCore.h" // macro header can not be used without include of CTestCore
 
-#define UTEST_ASSERT(condition)                  (utest::CTestCore<void>::getInstance().failIf(!(condition), "assertion failed", "Expression: " #condition, __FILE__, __LINE__))
-#define UTEST_ASSERT_MESSAGE(condition, message) (utest::CTestCore<void>::getInstance().failIf(!(condition), (message),          "Expression: " #condition, __FILE__, __LINE__))
+#define HTUTEST_ASSERT(condition)                  (htutest::CTestCore<void>::get_instance().fail_if(!(condition), "assertion failed", "Expression: " #condition, __FILE__, __LINE__))
+#define HTUTEST_ASSERT_MESSAGE(condition, message) (htutest::CTestCore<void>::get_instance().fail_if(!(condition), (message),          "Expression: " #condition, __FILE__, __LINE__))
 
-#define UTEST_ASSERT_EQUAL(value1, value2)                  (utest::CTestCore<void>::getInstance().failIf(!((value1) == (value2)), "assertion failed", "Expression: " #value1 " == " #value2, __FILE__, __LINE__))
-#define UTEST_ASSERT_EQUAL_MESSAGE(value1, value2, message) (utest::CTestCore<void>::getInstance().failIf(!((value1) == (value2)), (message),          "Expression: " #value1 " == " #value2, __FILE__, __LINE__))
+#define HTUTEST_ASSERT_EQUAL(value1, value2)                  (htutest::CTestCore<void>::get_instance().fail_if(!((value1) == (value2)), "assertion failed", "Expression: " #value1 " == " #value2, __FILE__, __LINE__))
+#define HTUTEST_ASSERT_EQUAL_MESSAGE(value1, value2, message) (htutest::CTestCore<void>::get_instance().fail_if(!((value1) == (value2)), (message),          "Expression: " #value1 " == " #value2, __FILE__, __LINE__))
 
-#define UTEST_ASSERT_MSG       UTEST_ASSERT_MESSAGE
-#define UTEST_ASSERT_EQUAL_MSG UTEST_ASSERT_EQUAL_MESSAGE
+#define HTUTEST_ASSERT_MSG       UTEST_ASSERT_MESSAGE
+#define HTUTEST_ASSERT_EQUAL_MSG UTEST_ASSERT_EQUAL_MESSAGE
 
-#define UTEST_RETURN return (int)(utest::CTestCore<void>::getInstance().getFunctionState());
+#define HTUTEST_RETURN return (int)(htutest::CTestCore<void>::get_instance().get_function_state());
 
-#define PRINT(...) utest::CTestCore<void>::getInstance().print(__VA_ARGS__)
+#define HTUTEST_PRINT(...) htutest::CTestCore<void>::get_instance().print(__VA_ARGS__)
 
-#define COLOR_RED    "\33[0;31m"
-#define COLOR_GREEN  "\33[0;32m"
-#define COLOR_ORANGE "\33[0;33m"
-#define COLOR_BLUE   "\33[0;36m"
-#define COLOR_END    "\33[m"
+#define HTUTEST_COLOR_RED    "\33[0;31m"
+#define HTUTEST_COLOR_GREEN  "\33[0;32m"
+#define HTUTEST_COLOR_ORANGE "\33[0;33m"
+#define HTUTEST_COLOR_BLUE   "\33[0;36m"
+#define HTUTEST_COLOR_END    "\33[m"

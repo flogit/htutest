@@ -18,19 +18,19 @@
 #include "CUnitTest.h"
 #include "macro.h"
 
-namespace utest
+namespace htutest
 {
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
-    CUnitTestSuite::CUnitTestSuite(const std::initializer_list<CUnitTestBase*>& inList) :
-        m_testList(inList)    
+    CUnitTestSuite::CUnitTestSuite(const std::initializer_list<CUnitTestBase*>& in_list) :
+        m_test_list(in_list)
     {
     }
 
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
-    CUnitTestSuite::CUnitTestSuite(CUnitTestBase* inTest) :
-        m_testList({inTest})
+    CUnitTestSuite::CUnitTestSuite(CUnitTestBase* in_test) :
+        m_test_list({in_test})
     {
     }
 
@@ -38,107 +38,106 @@ namespace utest
     ////////////////////////////////////////////////////////////////////////////////
     CUnitTestSuite::~CUnitTestSuite()
     {
-        for(auto test : m_testList)
+        for(auto test : m_test_list)
         {
             delete test;
         }
-        m_testList.clear();
+        m_test_list.clear();
     }
 
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
     int
-    CUnitTestSuite::run(int inArgc, char** inArgv)
+    CUnitTestSuite::run(int in_argc, char** in_argv)
     {
-        bool globalResult = true;
+        bool global_result = true;
 
-        std::map<std::string, std::unordered_set<std::string>> testMapFromParsing;
-        bool listAvailableTest = false;
-        parse_args(inArgc, inArgv, testMapFromParsing, listAvailableTest);
+        std::map<std::string, std::unordered_set<std::string>> test_map_from_parsing;
+        bool list_available_test = false;
+        parse_args(in_argc, in_argv, test_map_from_parsing, list_available_test);
 
-        if (listAvailableTest)
+        if (list_available_test)
         {
-            for(auto test : m_testList)
+            for(auto test : m_test_list)
             {
-                PRINT(test->getName());
+                HTUTEST_PRINT(test->get_name());
             }
         }
         else
         {
             bool at_least_one_test_launched = false;
-
-            for(auto test : m_testList)
+            for(auto test : m_test_list)
             {
-                auto foundIter = testMapFromParsing.find(test->getName());
+                auto found_iter = test_map_from_parsing.find(test->get_name());
 
-                if (foundIter != testMapFromParsing.cend())
+                if (found_iter != test_map_from_parsing.cend())
                 {
                     at_least_one_test_launched = true;
 
-                    PRINT(" Start the test ", COLOR_ORANGE, test->getName(), COLOR_END);
-                    PRINT("/-------------------------------");
+                    HTUTEST_PRINT(" Start the test ", HTUTEST_COLOR_ORANGE, test->get_name(), HTUTEST_COLOR_END);
+                    HTUTEST_PRINT("/-------------------------------");
 
-                    bool result = test->runTest(foundIter->second);
+                    bool result = test->run_test(found_iter->second);
 
-                    PRINT("\\-------------------------------");
-                    PRINT(" End of the test ", COLOR_ORANGE, test->getName(), COLOR_END, " (", result ? COLOR_GREEN "OK" COLOR_END : COLOR_RED "FAIL" COLOR_END, ")");
-                    PRINT();
+                    HTUTEST_PRINT("\\-------------------------------");
+                    HTUTEST_PRINT(" End of the test ", HTUTEST_COLOR_ORANGE, test->get_name(), HTUTEST_COLOR_END, " (", result ? HTUTEST_COLOR_GREEN "OK" HTUTEST_COLOR_END : HTUTEST_COLOR_RED "FAIL" HTUTEST_COLOR_END, ")");
+                    HTUTEST_PRINT();
 
-                    globalResult &= result;
+                    global_result &= result;
                 }
             }
 
             if (at_least_one_test_launched)
             {
-                PRINT("Global result of the test : ", globalResult ? COLOR_GREEN "OK" COLOR_END : COLOR_RED "FAIL" COLOR_END);
+                HTUTEST_PRINT("Global result of the test : ", global_result ? HTUTEST_COLOR_GREEN "OK" HTUTEST_COLOR_END : HTUTEST_COLOR_RED "FAIL" HTUTEST_COLOR_END);
             }
             else
             {
-                PRINT("No test launched");
+                HTUTEST_PRINT("No test launched");
             }
         }
 
-        return globalResult ? 0 : 1;
+        return global_result ? 0 : 1;
     }
 
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
     void
-    CUnitTestSuite::parse_args(int inArgc,
-                               char** inArgv,
-                               std::map<std::string, std::unordered_set<std::string>>& outTestListFromParsing,
-                               bool& outListAvailableTest)
+    CUnitTestSuite::parse_args(int in_argc,
+                               char** in_argv,
+                               std::map<std::string, std::unordered_set<std::string>>& out_test_list_from_parsing,
+                               bool& out_list_available_test)
     {
-        outListAvailableTest = false;
+        out_list_available_test = false;
 
-        for (unsigned int argIdx = 1; argIdx < (unsigned int) inArgc; ++argIdx)
+        for (unsigned int arg_idx = 1; arg_idx < (unsigned int) in_argc; ++arg_idx)
         {
-            std::string arg(inArgv[argIdx]);
+            std::string arg(in_argv[arg_idx]);
 
             if (arg == "-l")
             {
-                outListAvailableTest = true;
+                out_list_available_test = true;
             }
 
             size_t separator = arg.find_first_of("/");
             if (separator != std::string::npos)
             {
-                std::string testName   = arg.substr(0, separator);
-                std::string testMethod = arg.substr(separator + 1);
-                outTestListFromParsing[testName].insert(testMethod);
+                std::string test_name   = arg.substr(0, separator);
+                std::string test_method = arg.substr(separator + 1);
+                out_test_list_from_parsing[test_name].insert(test_method);
             }
             else
             {
-                const std::string& testName = arg;
-                outTestListFromParsing[testName].insert("*");
+                const std::string& test_name = arg;
+                out_test_list_from_parsing[test_name].insert("*");
             }
         }
 
-        if (outTestListFromParsing.empty())
+        if (out_test_list_from_parsing.empty())
         {
-            for(auto test : m_testList)
+            for(auto test : m_test_list)
             {
-                outTestListFromParsing[test->getName()].insert("*");
+                out_test_list_from_parsing[test->get_name()].insert("*");
             }
         }
     }

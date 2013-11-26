@@ -19,25 +19,25 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-class CMyMinimalTest : public utest::CUnitTest<CMyMinimalTest>
+class CMyMinimalTest : public htutest::CUnitTest<CMyMinimalTest>
 {
     public : // methods
 
         bool main()
         {
-            UTEST_ASSERT(1 == 1);
-            UTEST_ASSERT(1 == 0);
+            HTUTEST_ASSERT(1 == 1);
+            HTUTEST_ASSERT(1 == 0);
 
-            UTEST_ASSERT_MESSAGE(2 == 2, "Of course");
-            UTEST_ASSERT_MESSAGE(2 == 1, "Strange result");
+            HTUTEST_ASSERT_MESSAGE(2 == 2, "Of course");
+            HTUTEST_ASSERT_MESSAGE(2 == 1, "Strange result");
 
-            UTEST_ASSERT_EQUAL(3, 3);
-            UTEST_ASSERT_EQUAL(3, 2);
+            HTUTEST_ASSERT_EQUAL(3, 3);
+            HTUTEST_ASSERT_EQUAL(3, 2);
 
-            UTEST_ASSERT_EQUAL_MESSAGE(3, 3, "Of course");
-            UTEST_ASSERT_EQUAL_MESSAGE(3, 2, "Strange result");
+            HTUTEST_ASSERT_EQUAL_MESSAGE(3, 3, "Of course");
+            HTUTEST_ASSERT_EQUAL_MESSAGE(3, 2, "Strange result");
 
-            UTEST_RETURN;
+            HTUTEST_RETURN;
         }
 };
 
@@ -45,5 +45,5 @@ class CMyMinimalTest : public utest::CUnitTest<CMyMinimalTest>
 ////////////////////////////////////////////////////////////////////////////////
 int main(int, char**)
 {
-    return utest::CUnitTestSuite(new CMyMinimalTest).run();
+    return htutest::CUnitTestSuite(new CMyMinimalTest).run();
 }

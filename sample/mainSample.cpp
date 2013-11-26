@@ -19,7 +19,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-class CMyTest1 : public utest::CUnitTest<CMyTest1>
+class CMyTest1 : public htutest::CUnitTest<CMyTest1>
 {
     public : // methods
 
@@ -32,7 +32,7 @@ class CMyTest1 : public utest::CUnitTest<CMyTest1>
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 CMyTest1::CMyTest1() :
-    utest::CUnitTest<CMyTest1>("CTest1")
+    htutest::CUnitTest<CMyTest1>("CTest1")
 {
     add("test_one"  , &CMyTest1::test_one);
     add("test_two"  , &CMyTest1::test_two);
@@ -44,53 +44,53 @@ CMyTest1::CMyTest1() :
 ////////////////////////////////////////////////////////////////////////////////
 bool CMyTest1::test_one()
 {
-    UTEST_ASSERT_MESSAGE(1 == 1, "Of course");
-    UTEST_ASSERT_MESSAGE(2 == 2, "For sure");
+    HTUTEST_ASSERT_MESSAGE(1 == 1, "Of course");
+    HTUTEST_ASSERT_MESSAGE(2 == 2, "For sure");
 
-    UTEST_RETURN;
+    HTUTEST_RETURN;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 bool CMyTest1::test_two()
 {
-    UTEST_ASSERT(3 == 3);
-    UTEST_ASSERT(4 == 4);
+    HTUTEST_ASSERT(3 == 3);
+    HTUTEST_ASSERT(4 == 4);
 
-    UTEST_RETURN;
+    HTUTEST_RETURN;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 bool CMyTest1::test_three()
 {
-    UTEST_ASSERT_EQUAL_MESSAGE(5, 0, "Wow ! Strange result");
-    UTEST_ASSERT_EQUAL_MESSAGE(6, 6, "Wow ! Strange result");
+    HTUTEST_ASSERT_EQUAL_MESSAGE(5, 0, "Wow ! Strange result");
+    HTUTEST_ASSERT_EQUAL_MESSAGE(6, 6, "Wow ! Strange result");
 
-    UTEST_RETURN;
+    HTUTEST_RETURN;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-class CMyTest2 : public utest::CUnitTest<CMyTest2>
+class CMyTest2 : public htutest::CUnitTest<CMyTest2>
 {
     public : // methods
 
-        CMyTest2() : utest::CUnitTest<CMyTest2>("CTest2") {}
+        CMyTest2() : htutest::CUnitTest<CMyTest2>("CTest2") {}
 
-        void setUp() { m_pData = new int(7); }
+        void set_up() { m_pData = new int(7); }
 
         bool main()
         {
-            UTEST_ASSERT_EQUAL(*m_pData * 1, 7);
-            UTEST_ASSERT_EQUAL(*m_pData * 2, 14);
-            UTEST_ASSERT_EQUAL(*m_pData * 3, 21);
-            UTEST_ASSERT_EQUAL(*m_pData * 4, 28);
-            UTEST_ASSERT_EQUAL(*m_pData * 5, 35);
-            UTEST_RETURN;
+            HTUTEST_ASSERT_EQUAL(*m_pData * 1, 7);
+            HTUTEST_ASSERT_EQUAL(*m_pData * 2, 14);
+            HTUTEST_ASSERT_EQUAL(*m_pData * 3, 21);
+            HTUTEST_ASSERT_EQUAL(*m_pData * 4, 28);
+            HTUTEST_ASSERT_EQUAL(*m_pData * 5, 35);
+            HTUTEST_RETURN;
         }
 
-        void tearDown() { delete m_pData; }
+        void tear_down() { delete m_pData; }
 
     private:
         int* m_pData;
@@ -100,8 +100,8 @@ class CMyTest2 : public utest::CUnitTest<CMyTest2>
 ////////////////////////////////////////////////////////////////////////////////
 int main(int inArgc, char** inArgv)
 {
-    return utest::CUnitTestSuite({
-                                  new CMyTest1,
-                                  new CMyTest2,
-                                 }).run(inArgc, inArgv);
+    return htutest::CUnitTestSuite({
+                                    new CMyTest1,
+                                    new CMyTest2,
+                                   }).run(inArgc, inArgv);
 }
