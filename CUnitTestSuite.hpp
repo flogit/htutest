@@ -61,6 +61,7 @@ namespace htutest
             for(auto test : m_test_list)
             {
                 HTUTEST_PRINT(test->get_name());
+                test->list_functions();
             }
         }
         else
@@ -77,7 +78,7 @@ namespace htutest
                     HTUTEST_PRINT(" Start the test ", HTUTEST_COLOR_ORANGE, test->get_name(), HTUTEST_COLOR_END);
                     HTUTEST_PRINT("/-------------------------------");
 
-                    bool result = test->run_test(found_iter->second);
+                    bool result = test->run_functions(found_iter->second);
 
                     HTUTEST_PRINT("\\-------------------------------");
                     HTUTEST_PRINT(" End of the test ", HTUTEST_COLOR_ORANGE, test->get_name(), HTUTEST_COLOR_END, " (", result ? HTUTEST_COLOR_GREEN "OK" HTUTEST_COLOR_END : HTUTEST_COLOR_RED "FAIL" HTUTEST_COLOR_END, ")");

@@ -27,11 +27,14 @@ namespace htutest
     {
         public:
             virtual ~CUnitTestBase() {}
-            virtual bool run_test (const std::unordered_set<std::string>& in_list) = 0;
-            inline const std::string& get_name() const {return m_name;}
+
+            virtual bool run_functions(const std::unordered_set<std::string>& in_function_list) = 0;
+            virtual void list_functions() const = 0;
+
+            const std::string& get_name() const { return m_name; }
 
         protected:
-            CUnitTestBase(const std::string &in_name = "anonymous") : m_name(in_name){};
+            CUnitTestBase(const std::string &in_name = "anonymous") : m_name(in_name) {};
 
         protected:
             std::string m_name;
@@ -44,8 +47,10 @@ namespace htutest
             CUnitTest(const std::string &in_name = "anonymous") : CUnitTestBase(in_name) {}
             virtual ~CUnitTest() {};
 
-            void add(const std::string & in_name, bool(T::* in_fct)());
-            bool run_test (const std::unordered_set<std::string> &in_list);
+            inline void add(const std::string& in_function_name, bool(T::* in_p_function)());
+            inline bool run_functions(const std::unordered_set<std::string> &in_function_list);
+
+            inline void list_functions() const;
 
             virtual void set_up   ()   {}
             virtual void tear_down()   {}
@@ -53,14 +58,14 @@ namespace htutest
             virtual bool main() { return true; };
 
         private: // type declarations
-            struct STest
+            struct SFunction
             {
                 std::string m_name;
-                std::mem_fun_t <bool, T> m_fun;
+                std::mem_fun_t<bool, T> m_fun;
             };
 
         private: // members
-            std::list<STest> m_test_list;
+            std::list<SFunction> m_function_list;
     };
 }
 

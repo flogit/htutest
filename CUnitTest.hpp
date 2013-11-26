@@ -23,34 +23,34 @@ namespace htutest
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
     template <class T>
-    void CUnitTest<T>::add(const std::string& in_name, bool(T::*in_fct)())
+    void CUnitTest<T>::add(const std::string& in_function_name, bool(T::*in_p_function)())
     {
-        m_test_list.push_back(STest{in_name, std::mem_fun(in_fct)});
+        m_function_list.push_back(SFunction{in_function_name, std::mem_fun(in_p_function)});
     }
 
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
     template <class T>
-    bool CUnitTest<T>::run_test(const std::unordered_set<std::string>& in_list)
+    bool CUnitTest<T>::run_functions(const std::unordered_set<std::string>& in_function_list)
     {
-        if (m_test_list.empty())
+        if (m_function_list.empty())
         {
             add("main", &T::main);
         }
 
         bool global_result = true;
 
-        for (STest& test : m_test_list)
+        for (SFunction& function : m_function_list)
         {
-            if (in_list.empty() || in_list.count("*") || in_list.count(test.m_name))
+            if (in_function_list.empty() || in_function_list.count("*") || in_function_list.count(function.m_name))
             {
                 CTestCore<void>::get_instance().start_function();
                 {
                     set_up();
                     {
-                        bool result = test.m_fun(static_cast<T*>(this));
+                        bool result = function.m_fun(static_cast<T*>(this));
 
-                        HTUTEST_PRINT("Test ", test.m_name, "... ", result ? HTUTEST_COLOR_GREEN "OK" HTUTEST_COLOR_END : HTUTEST_COLOR_RED "FAILED" HTUTEST_COLOR_END);
+                        HTUTEST_PRINT("Test ", function.m_name, "... ", result ? HTUTEST_COLOR_GREEN "OK" HTUTEST_COLOR_END : HTUTEST_COLOR_RED "FAILED" HTUTEST_COLOR_END);
 
                         global_result &= result;
                     }
@@ -61,5 +61,16 @@ namespace htutest
         }
 
         return global_result;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+    template <class T>
+    void CUnitTest<T>::list_functions() const
+    {
+        for (const SFunction& function : m_function_list)
+        {
+            HTUTEST_PRINT(std::string(" - ") + function.m_name);
+        }
     }
 }
